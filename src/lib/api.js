@@ -97,3 +97,22 @@ export async function apiReportScroll(platform, scrollAmount) {
     body: JSON.stringify({ platform, scrollAmount }),
   });
 }
+
+// ─── Public stats ───────────────────────────────────────────────────
+
+export async function apiGetPublicStats() {
+  const res = await fetch(`${API_BASE}/api/stats`);
+  if (!res.ok) throw new Error('Stats unavailable');
+  return res.json();
+}
+
+// ─── Admin ──────────────────────────────────────────────────────────
+
+export async function apiGetAdminStats(key) {
+  const res = await fetch(
+    `${API_BASE}/api/admin/stats?key=${encodeURIComponent(key)}`
+  );
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || 'Admin stats unavailable');
+  return data;
+}

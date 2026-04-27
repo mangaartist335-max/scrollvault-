@@ -7,6 +7,8 @@ import socialAuthRoutes from './routes/socialAuth.js';
 import balanceRoutes from './routes/balance.js';
 import scrollRoutes from './routes/scroll.js';
 import oauthRoutes from './routes/oauth.js';
+import statsRoutes from './routes/stats.js';
+import adminRoutes from './routes/admin.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -49,6 +51,8 @@ app.use('/api/auth', socialAuthRoutes);
 app.use('/api/balance', balanceRoutes);
 app.use('/api/scroll-event', scrollRoutes);
 app.use('/api/oauth', oauthRoutes);
+app.use('/api/stats', statsRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Health check
 app.get('/api/health', (_req, res) => res.json({ status: 'ok' }));

@@ -5,6 +5,8 @@ import paypal from '@paypal/payouts-sdk';
 
 const router = Router();
 
+const MIN_WITHDRAW = Number(process.env.MIN_WITHDRAW ?? 10);
+
 // Setup PayPal Environment (Sandbox for now)
 const clientId = process.env.PAYPAL_CLIENT_ID;
 const clientSecret = process.env.PAYPAL_CLIENT_SECRET;
@@ -49,6 +51,12 @@ router.post('/withdraw', auth, async (req, res) => {
   try {
     const { amount, method, details } = req.body;
     if (!amount || amount <= 0) return res.status(400).json({ error: 'Invalid amount' });
+
+    if (amount < MIN_WITHDRAW) {
+      return res
+        .status(400)
+        .json({ error: `Minimum withdrawal is $${MIN_WITHDRAW.toFixed(2)}` });
+    }
 
     // Fetch current balance
     const { data: balanceData, error: balanceError } = await supabase
